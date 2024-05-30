@@ -16,7 +16,7 @@ class BarangController extends Controller
     public function index()
     {
         $barang = Barang::all();
-        return view('barangs/index', compact('barang'));
+        return view('barang/index', compact('barang'));
     }
 
     /**
@@ -27,7 +27,7 @@ class BarangController extends Controller
     public function create()
     {
         $merk = Merk::all();
-        return view('barangs/create', compact('merk'));
+        return view('barang/create', compact('merk'));
     }
 
     /**
@@ -38,15 +38,40 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
+        $harga = $this->getHargaBerdasarkanStok($request->stok);
+
         $barang = new Barang;
         $barang->nama_barang = $request->input('nama_barang');
         $barang->stok = $request->input('stok');
         $barang->harga = $request->input('harga');
         $barang->id_merk = $request->input('id_merk');
+
+        if ($request->hasFile('cover')) {
+            $file = $request->file('cover');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/barang'), $filename);
+            $barang->cover = $filename;
+        }
+
         $barang->save();
-        
+
         return redirect()->route('barang.index')
-        ->with('success', 'data berhasil ditambahkan');
+            ->with('success', 'data berhasil ditambahkan');
+
+    }
+
+    private function getHargaBerdasarkanStok($stok)
+    {
+        switch ($stok) {
+            case 10:
+                return 10000; // harga untuk stok 10
+            case 20:
+                return 18000; // harga untuk stok 20
+            case 30:
+                return 25000; // harga untuk stok 30
+            default:
+                return 0; // default harga jika stok tidak cocok
+        }
     }
 
     /**
@@ -58,7 +83,7 @@ class BarangController extends Controller
     public function show($id)
     {
         $barang = Barang::findOrFail($id);
-        return view('barangs.show', compact('barang'));
+        return view('barang.show', compact('barang'));
     }
 
     /**
@@ -71,7 +96,7 @@ class BarangController extends Controller
     {
         $barang = Barang::findOrFail($id);
         $merk = Merk::all();
-        return view('barangs.edit', compact('barang', 'merk'));
+        return view('barang.edit', compact('barang', 'merk'));
     }
 
     /**

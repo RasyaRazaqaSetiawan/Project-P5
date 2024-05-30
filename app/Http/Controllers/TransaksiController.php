@@ -17,7 +17,7 @@ class TransaksiController extends Controller
     public function index()
     {
         $transaksi = Transaksi::all();
-        return view('transaksis/index', compact('transaksi'));
+        return view('transaksi/index', compact('transaksi'));
     }
 
     /**
@@ -28,11 +28,8 @@ class TransaksiController extends Controller
     public function create()
     {
         $barang = Barang::all();
-        return view('Transaksis.create', compact('barang'));
-
-
-        $kasir =  Kasir::all();
-        return view('Transaksis.create', compact('kasir'));
+        $kasir = Kasir::all();
+        return view('transaksi.create', compact('barang', 'kasir'));
     }
 
     /**
@@ -59,7 +56,6 @@ class TransaksiController extends Controller
         $transaksi->save();
         return redirect()->route('transaksi.index')->with('success', 'Data berhasil ditambahkan');
     }
-
     /**
      * Display the specified resource.
      *
@@ -69,7 +65,7 @@ class TransaksiController extends Controller
     public function show(transaksi $id)
     {
         $transaksi = Transaksi::findOrFail($id);
-        return view('transaksis.show', compact('transaksi'));
+        return view('transaksi.show', compact('transaksi'));
     }
 
     /**
@@ -83,7 +79,7 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::findOrFail($id);
         $barang = Barang::all();
         $kasir = Kasir::all();
-        return view('transaksis.edit', compact('transaksi', 'barang', 'kasir'));
+        return view('transaksi.edit', compact('transaksi', 'barang', 'kasir'));
     }
 
     /**

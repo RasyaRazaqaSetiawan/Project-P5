@@ -43,7 +43,3 @@ Route::resource('barang', BarangController::class);
 use App\Http\Controllers\TransaksiController;
 Route::resource('transaksi', TransaksiController::class);
 // Transaksi
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

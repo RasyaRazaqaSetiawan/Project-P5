@@ -21,7 +21,7 @@ class MerkController extends Controller
     public function index()
     {
         $merk = Merk::all();
-        return view('merks/index', compact('merk'));
+        return view('merk/index', compact('merk'));
     }
 
     /**
@@ -31,7 +31,7 @@ class MerkController extends Controller
      */
     public function create()
     {
-        return view('merks.create');
+        return view('merk.create');
     }
 
     /**
@@ -42,11 +42,25 @@ class MerkController extends Controller
      */
     public function store(Request $request)
     {
+
         $merk = new Merk;
         $merk->nama_merk = $request->input('nama_merk');
+
+        // Handle image upload
+        if ($request->hasFile('cover')) {
+            $img = $request->file('cover');
+            $name = time() . '_' . $img->getClientOriginalName();
+            $img->move(public_path('images/merk'), $name);
+            $merk->cover = $name;
+        }
+
         $merk->save();
         return redirect()->route('merk.index')
-        ->with('success', 'data berhasil ditambahkan');
+            ->with('success', 'Data berhasil ditambahkan');
+
+        $merk->save();
+        return redirect()->route('merk.index')
+            ->with('success', 'data berhasil ditambahkan');
     }
 
     /**
@@ -58,7 +72,7 @@ class MerkController extends Controller
     public function show($id)
     {
         $merk = Merk::findOrFail($id);
-        return view('merks.show', compact('merk'));
+        return view('merk.show', compact('merk'));
     }
 
     /**
@@ -70,7 +84,7 @@ class MerkController extends Controller
     public function edit($id)
     {
         $merk = Merk::findOrFail($id);
-        return view('merks.edit', compact('merk'));
+        return view('merk.edit', compact('merk'));
     }
 
     /**
@@ -97,7 +111,7 @@ class MerkController extends Controller
         }
 
         return redirect()->route('merk.index')
-        ->with('success', 'data berhasil diubah');
+            ->with('success', 'data berhasil diubah');
     }
 
     /**

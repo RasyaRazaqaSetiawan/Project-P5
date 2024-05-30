@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class kasir extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'nama_kasir', , 'jenis_kelamin', 'alamat', 'no_telepon', 'cover'];
+    protected $fillable = ['id', 'nama_kasir', 'jenis_kelamin', 'alamat', 'no_telepon', 'cover'];
     public $timestamps = true;
 
     public function kasir()
@@ -19,10 +19,8 @@ class kasir extends Model
     // menghapus cover
     public function deleteImage()
     {
-        if ($this->cover && file_exists(public_path('images/kasir' . $this->cover))) {
-            return unlink(public_path('images/kasir' . $this->cover));
+        if ($this->cover && file_exists(public_path('images/kasir/' . $this->cover))) {
+            return unlink(public_path('images/kasir/' . $this->cover));
         }
     }
 }
-
-// https://github.com/nurfawaiq/bootstrap-templates/blob/main/shoppy-template.zip

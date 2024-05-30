@@ -16,6 +16,12 @@ class barang extends Model
         return $this->belongsTo(Merk::class, 'id_merk');
     }
 
+    public function barang()
+    {
+        return $this->hasMany(Barang::class, 'id_transaksi');
+    }
+
+
     // menghapus cover
     public function deleteImage()
     {

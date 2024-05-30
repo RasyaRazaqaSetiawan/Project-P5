@@ -21,7 +21,7 @@ class KasirController extends Controller
     public function index()
     {
         $kasir = Kasir::all();
-        return view('kasirs/index', compact('kasir'));
+        return view('kasir/index', compact('kasir'));
     }
 
     /**
@@ -31,7 +31,7 @@ class KasirController extends Controller
      */
     public function create()
     {
-        return view('kasirs.index');
+        return view('kasir.create');
     }
 
     /**
@@ -47,6 +47,17 @@ class KasirController extends Controller
         $kasir->jenis_kelamin = $request->input('jenis_kelamin');
         $kasir->alamat = $request->input('alamat');
         $kasir->no_telepon = $request->input('no_telepon');
+
+
+        // delete img
+        if ($request->hasFile('cover')) {
+            $kasir->deleteImage();
+            $img = $request->file('cover');
+            $name = rand(1000, 9999) . $img->getClientOriginalName();
+            $img->move('images/kasir', $name);
+            $kasir->cover = $name;
+        }
+
         $kasir->save();
         return redirect()->route('kasir.index')
             ->with('success', 'data berhasil ditambahkan');
@@ -61,7 +72,7 @@ class KasirController extends Controller
     public function show($id)
     {
         $kasir = Kasir::findOrFail($id);
-        return view('kasirs.show', compact('kasir'));
+        return view('kasir.show', compact('kasir'));
     }
 
     /**
@@ -73,7 +84,7 @@ class KasirController extends Controller
     public function edit($id)
     {
         $kasir = Kasir::findOrFail($id);
-        return view('kasirs.edit', compact('kasir'));
+        return view('kasir.edit', compact('kasir'));
     }
 
     /**
