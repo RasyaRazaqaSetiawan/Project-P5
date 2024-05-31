@@ -102,16 +102,7 @@ class KasirController extends Controller
         $kasir->alamat = $request->alamat;
         $kasir->no_telepon = $request->no_telepon;
         $kasir->save();
-
-
-        // delete img
-        if ($request->hasFile('cover')) {
-            $kasir->deleteImage();
-            $img = $request->file('cover');
-            $name = rand(1000, 9999) . $img->getClientOriginalName();
-            $img->move('images/kasir', $name);
-            $kasir->cover = $name;
-        }
+        
         return redirect()->route('kasir.index')
             ->with('success', 'data berhasil diubah');
     }

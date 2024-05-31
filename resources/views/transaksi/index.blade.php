@@ -81,7 +81,7 @@
                                         <th>Nama Barang</th>
                                         <th>Nama Kasir</th>
                                         <th>Jumlah</th>
-                                        <th>Cover</th>
+                                        <th>Total</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -96,12 +96,7 @@
                                             <td>{{ $data->barang->nama_barang }}</td>
                                             <td>{{ $data->kasir->nama_kasir }}</td>
                                             <td>{{ $data->jumlah }}</td>
-                                            <td>
-                                                <img src="{{ asset('images/transaksi/' . $data->cover) }}"
-                                                    width="100" alt="">
-                                                {{-- img src = "{{asset('storage/'. $data->cover)}}"100 --}}
-                                                {{-- $data->cover --}}
-                                            </td>
+                                            <td>{{ $data->total }}</td>
                                             <form action="{{ route('transaksi.destroy', $data->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')

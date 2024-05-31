@@ -78,11 +78,6 @@
                                             <input type="tel" class="form-control" name="no_telepon" placeholder="No Telepon" value="{{$kasir->no_telepon}}" required>
                                         </div>
                                     </div>
-                                    <div class="form-group mb-3">
-                                        <label for="cover" class="form-label">Masukkan Gambar</label>
-                                        <input class="form-control form-control-sm" id="cover" type="file"
-                                            name="cover">
-                                    </div>
                                     <button type="submit" class="btn btn-success">Tambah</button>
                                     <a href="{{ url('kasir') }}" class="btn btn-primary">Kembali</a>
                                 </div> <!-- Akhiri card-body custom-padding -->

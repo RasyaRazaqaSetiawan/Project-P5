@@ -58,24 +58,23 @@
                                 <strong>Detail Data Transaksi</strong>
                                 <form action="" method="POST">
                                     <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Nama transaksi</label>
-                                        <input type="text" class="form-control mb-2" name="nama_barang"
-                                            value="{{ $transaksi->nama_transaksi }}" disabled>
-                                        <label for="exampleInputEmail1" class="form-label">Stok</label>
-                                        <input type="text" class="form-control mb-2" name="stok"
-                                            value="{{ $transaksi->stok }}" disabled>
-                                        <label for="exampleInputEmail1" class="form-label">Harga</label>
-                                        <input type="text" class="form-control mb-2" name="harga"
-                                            value="{{ $transaksi->harga }}" disabled>
-                                        <label for="exampleInputEmail1" class="form-label">Nama Merk</label>
-                                        <input type="text" class="form-control mb-2" name="id_merk"
-                                            value="{{ $transaksi->merk->nama_merk }}" disabled>
-                                        <label>Cover</label>
                                         <br>
-                                        <img src="{{ asset('images/transaksi/' . $transaksi->cover) }}" width="150"
-                                            alt="Cover transaksi">
+                                        <label for="exampleInputEmail1" class="form-label">Tanggal Pembelian</label>
+                                        <input type="text" class="form-control mb-2" name="tanggal_pembelian"
+                                            value="{{ $transaksi->tanggal_pembelian }}" disabled>
+                                        <label for="exampleInputEmail1" class="form-label">Nama barang</label>
+                                        <input type="text" class="form-control mb-2" name="id_barang"
+                                            value="{{ $transaksi->barang->nama_barang }}" disabled>
+                                        <label for="exampleInputEmail1" class="form-label">Nama kasir</label>
+                                        <input type="text" class="form-control mb-2" name="id_kasir"
+                                            value="{{ $transaksi->kasir->nama_kasir }}" disabled>
+                                        <label for="exampleInputEmail1" class="form-label">jumlah</label>
+                                        <input type="text" class="form-control mb-2" name="jumlah"
+                                            value="{{ $transaksi->jumlah }}" disabled>
+                                        <label for="exampleInputEmail1" class="form-label">total</label>
+                                        <input type="text" class="form-control mb-2" name="total"
+                                            value="{{ $transaksi->total }}" disabled>
                                     </div>
-                                    <br>
                                     <a href="{{ url('transaksi') }}" class="btn btn-primary mt-4">Kembali</a>
                                 </form>
                             </div>

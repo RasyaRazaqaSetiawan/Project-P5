@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\transaksi;
-use App\Models\barang;
-use App\Models\kasir;
+use App\Models\Transaksi;
+use App\Models\Barang;
+use App\Models\Kasir;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
@@ -17,7 +17,7 @@ class TransaksiController extends Controller
     public function index()
     {
         $transaksi = Transaksi::all();
-        return view('transaksi/index', compact('transaksi'));
+        return view('transaksi.index', compact('transaksi'));
     }
 
     /**
@@ -40,43 +40,46 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $transaksi = new transaksi;
+        // Buat transaksi baru
+        $transaksi = new Transaksi;
         $transaksi->tanggal_pembelian = $request->tanggal_pembelian;
         $transaksi->id_barang = $request->id_barang;
         $transaksi->id_kasir = $request->id_kasir;
         $transaksi->jumlah = $request->jumlah;
 
-        // update img
-        if ($request->hasFile('cover')) {
-            $img = $request->file('cover');
-            $name = rand(1000, 9999) . $img->getClientOriginalName();
-            $img->move('images/transaksi', $name);
-            $transaksi->cover = $name;
-        }
+        // Ambil harga barang dari database
+        $barang = Barang::findOrFail($transaksi->id_barang);
+        $transaksi->total = $barang->harga * $transaksi->jumlah;
+
+        // Mengurangi stok barang
+        $barang->stok -= $transaksi->jumlah;
+        $barang->save();
+
+        // Simpan transaksi
         $transaksi->save();
+
         return redirect()->route('transaksi.index')->with('success', 'Data berhasil ditambahkan');
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\transaksi  $transaksi
+     * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function show(transaksi $id)
+    public function show(Transaksi $transaksi)
     {
-        $transaksi = Transaksi::findOrFail($id);
         return view('transaksi.show', compact('transaksi'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\transaksi  $transaksi
+     * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function edit(transaksi $id)
+    public function edit(Transaksi $transaksi)
     {
-        $transaksi = Transaksi::findOrFail($id);
         $barang = Barang::all();
         $kasir = Kasir::all();
         return view('transaksi.edit', compact('transaksi', 'barang', 'kasir'));
@@ -86,42 +89,35 @@ class TransaksiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\transaksi  $transaksi
+     * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, transaksi $id)
+    public function update(Request $request, Transaksi $transaksi)
     {
-        $transaksi = Transaksi::findOrFail($id);
         $transaksi->tanggal_pembelian = $request->tanggal_pembelian;
         $transaksi->id_barang = $request->id_barang;
         $transaksi->id_kasir = $request->id_kasir;
         $transaksi->jumlah = $request->jumlah;
 
-        // delete img
-        if ($request->hasFile('cover')) {
-            $transaksi->deleteImage();
-            $img = $request->file('cover');
-            $name = rand(1000, 9999) . $img->getClientOriginalName();
-            $img->move('images/transaksi', $name);
-            $transaksi->cover = $name;
-        }
+        // Ambil harga barang dari database
+        $barang = Barang::findOrFail($transaksi->id_barang);
+        $transaksi->total = $barang->harga * $transaksi->jumlah;
 
+        // Simpan perubahan transaksi
         $transaksi->save();
-        return redirect()->route('transaksi.index')
-            ->with('success', 'data berhasil di ubah');
+
+        return redirect()->route('transaksi.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\transaksi  $transaksi
+     * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(transaksi $id)
+    public function destroy(Transaksi $transaksi)
     {
-        $transaksi = Transaksi::findOrFail($id);
         $transaksi->delete();
-        return redirect()->route(('transaksi.index'))
-            ->with('success', 'data berhasil di hapus');
+        return redirect()->route('transaksi.index')->with('success', 'Data berhasil dihapus');
     }
 }

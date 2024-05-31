@@ -66,17 +66,12 @@
                                         <p class="help-block">Masukkan Barang</p>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <select class="form-control" name="stok" id="stok" required>
-                                            <option value="" disabled selected>Pilih Stok</option>
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="30">30</option>
-                                        </select>
+                                        <label>stok</label>
+                                        <input type="number" class="form-control" name="stok" id="stok">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Harga</label>
-                                        <input type="text" class="form-control" name="harga" id="harga"
-                                            readonly>
+                                        <input type="text" class="form-control" name="harga" id="harga">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Nama Merk</label>
@@ -112,26 +107,6 @@
                 disable_search_threshold: 10,
                 no_results_text: "Oops, nothing found!",
                 width: "100%"
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const stokElement = document.getElementById('stok');
-            const hargaElement = document.getElementById('harga');
-
-            stokElement.addEventListener('change', function () {
-                const stok = parseInt(this.value);
-
-                let harga = 0;
-                if (stok === 10) {
-                    harga = 10000;
-                } else if (stok === 20) {
-                    harga = 18000;
-                } else if (stok === 30) {
-                    harga = 25000;
-                }
-
-                hargaElement.value = harga;
             });
         });
     </script>

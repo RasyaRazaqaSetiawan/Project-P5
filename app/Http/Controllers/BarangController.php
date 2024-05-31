@@ -109,11 +109,14 @@ class BarangController extends Controller
     public function update(Request $request, $id)
     {
         $barang = Barang::findOrFail($id);
-        $barang->name_barang = $request->name_barang;
-        $barang->price = $request->price;
-        $barang->description = $request->description;
+        $barang->nama_barang = $request->nama_barang;
+        $barang->stok = $request->stok;
+        $barang->harga = $request->harga;
         $barang->id_merk = $request->id_merk;
 
+        $barang->save();
+        return redirect()->route('barang.index')
+        ->with('success', 'data berhasil Ubah');
         // delete img
         if ($request->hasFile('cover')) {
             $barang->deleteImage();
@@ -122,6 +125,8 @@ class BarangController extends Controller
             $img->move('images/barang', $name);
             $barang->cover = $name;
         }
+
+
     }
 
     /**

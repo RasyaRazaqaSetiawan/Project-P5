@@ -77,7 +77,6 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama merk</th>
-                                        <th>Image</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -89,9 +88,6 @@
                                         <tr class="odd gradeX">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $data->nama_merk }}</td>
-                                            <td>
-                                                <img src="{{ asset('images/merk/' . $data->cover) }}" width="75" alt="">
-                                            </td>
                                             <form action="{{ route('merk.destroy', $data->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')

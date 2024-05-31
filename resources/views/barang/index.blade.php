@@ -69,53 +69,53 @@
                             <div class="card-body" style="overflow-x:auto;">
                                 <table id="bootstrap-data-table" class="table table-striped table-bordered">
                                     @if (session('success'))
-                                    <div class="alert alert-success" role="alert">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
+                                        <div class="alert alert-success" role="alert">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
 
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama barang</th>
-                                        <th>Stok</th>
-                                        <th>Harga</th>
-                                        <th>Nama Merk</th>
-                                        <th>Cover</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $no = 1;
-                                    @endphp
-                                    @foreach ($barang as $data)
-                                        <tr class="odd gradeX">
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ $data->nama_barang }}</td>
-                                            <td>{{ $data->stok }}</td>
-                                            <td>{{ $data->harga }}</td>
-                                            <td>{{ $data->merk->nama_merk }}</td>
-                                            <td>
-                                                <img src="{{ asset('images/barang/' . $data->cover) }}"
-                                                    width="100" alt="">
-                                                {{-- img src = "{{asset('storage/'. $data->cover)}}"100 --}}
-                                                {{-- $data->cover --}}
-                                            </td>
-                                            <form action="{{ route('barang.destroy', $data->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <td class="center">
-                                                    <a href="{{ route('barang.edit', $data->id) }}"
-                                                        class="btn btn-success">Ubah</a>
-                                                    <a href="{{ route('barang.show', $data->id) }}"
-                                                        class="btn btn-warning">Detail</a>
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('Apakah Anda Yakin ingin menghapus data ini?')">
-                                                        Delete</button>
-                                                </td>
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama barang</th>
+                                            <th>Stok</th>
+                                            <th>Harga</th>
+                                            <th>Nama Merk</th>
+                                            <th>Cover</th>
+                                            <th>Action</th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $no = 1;
+                                        @endphp
+                                        @foreach ($barang as $data)
+                                            <tr class="odd gradeX">
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $data->nama_barang }}</td>
+                                                <td>{{ $data->stok }}</td>
+                                                <td>{{ $data->harga }}</td>
+                                                <td>{{ $data->merk->nama_merk }}</td>
+                                                <td>
+                                                    <img src="{{ asset('images/barang/' . $data->cover) }}"
+                                                        width="100" alt="">
+                                                    {{-- img src = "{{asset('storage/'. $data->cover)}}"100 --}}
+                                                    {{-- $data->cover --}}
+                                                </td>
+                                                <form action="{{ route('barang.destroy', $data->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <td class="center">
+                                                        <a href="{{ route('barang.edit', $data->id) }}"
+                                                            class="btn btn-success">Ubah</a>
+                                                        <a href="{{ route('barang.show', $data->id) }}"
+                                                            class="btn btn-warning">Detail</a>
+                                                        <button type="submit" class="btn btn-danger"
+                                                            onclick="return confirm('Apakah Anda Yakin ingin menghapus data ini?')">
+                                                            Delete</button>
+                                                    </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -148,4 +148,5 @@
         });
     </script>
 </body>
+
 </html>

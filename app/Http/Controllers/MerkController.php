@@ -46,14 +46,6 @@ class MerkController extends Controller
         $merk = new Merk;
         $merk->nama_merk = $request->input('nama_merk');
 
-        // Handle image upload
-        if ($request->hasFile('cover')) {
-            $img = $request->file('cover');
-            $name = time() . '_' . $img->getClientOriginalName();
-            $img->move(public_path('images/merk'), $name);
-            $merk->cover = $name;
-        }
-
         $merk->save();
         return redirect()->route('merk.index')
             ->with('success', 'Data berhasil ditambahkan');
@@ -99,16 +91,6 @@ class MerkController extends Controller
         $merk = Merk::findOrFail($id);
         $merk->nama_merk = $request->nama_merk;
         $merk->save();
-
-
-        // delete img
-        if ($request->hasFile('cover')) {
-            $merk->deleteImage();
-            $img = $request->file('cover');
-            $name = rand(1000, 9999) . $img->getClientOriginalName();
-            $img->move('images/$merk', $name);
-            $merk->cover = $name;
-        }
 
         return redirect()->route('merk.index')
             ->with('success', 'data berhasil diubah');

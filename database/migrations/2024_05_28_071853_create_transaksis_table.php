@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_barang');
             $table->unsignedBigInteger('id_kasir');
             $table->integer('jumlah');
-            $table->string('cover');
+            $table->integer('total');
             $table->timestamps();
 
             $table->foreign('id_barang')->references('id')->on('barangs')->onDelete('cascade');

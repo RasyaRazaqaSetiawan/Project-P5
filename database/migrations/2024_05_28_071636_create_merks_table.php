@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('merks', function (Blueprint $table) {
             $table->id();
             $table->string('nama_merk');
-            $table->string('cover');
             $table->timestamps();
         });
     }

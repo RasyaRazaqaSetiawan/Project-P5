@@ -68,13 +68,8 @@
                                         <p class="help-block">Masukkan Nama Anda </p>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Stok</label><br>
-                                        <select class="form-control" name="stok" id="stok" required>
-                                            <option value="" disabled selected>Pilih Stok</option>
-                                            <option value="10" {{ $barang->stok == '10' ? 'checked' : '' }}>10</option>
-                                            <option value="20" {{ $barang->stok == '20' ? 'checked' : '' }}>20</option>
-                                            <option value="30" {{ $barang->stok == '30' ? 'checked' : '' }}>30</option>
-                                        </select>
+                                        <label>stok</label>
+                                        <input type="number" class="form-control" name="stok" id="stok" value="{{$barang->stok}}">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Harga</label>
@@ -92,11 +87,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="cover" class="form-label">Masukkan Gambar</label>
+                                        <label for="cover" class="form-label">Edit Gambar</label>
                                         <input class="form-control form-control-sm" id="cover" type="file"
                                             name="cover">
                                     </div>
-                                    <button type="submit" class="btn btn-success">Tambah</button>
+                                    <button type="submit" class="btn btn-success">Edit</button>
                                     <a href="{{ url('barang') }}" class="btn btn-primary">Kembali</a>
                                 </div> <!-- Akhiri card-body custom-padding -->
                             </form>

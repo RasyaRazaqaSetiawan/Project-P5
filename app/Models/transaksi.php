@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class transaksi extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'tanggal_pembelian', 'id_barang', 'id_kasir', 'cover'];
+    protected $fillable = ['id', 'tanggal_pembelian', 'id_barang', 'id_kasir','jumlah','total'];
     public $timestamps = true;
 
     public function kasir()
@@ -19,13 +19,5 @@ class transaksi extends Model
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'id_barang');
-    }
-
-    // menghapus cover
-    public function deleteImage()
-    {
-        if ($this->cover && file_exists(public_path('images/transaksi' . $this->cover))) {
-            return unlink(public_path('images/transaksi' . $this->cover));
-        }
     }
 }

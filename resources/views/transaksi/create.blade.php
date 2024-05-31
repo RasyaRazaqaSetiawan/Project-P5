@@ -41,7 +41,7 @@
                         <ol class="breadcrumb text-right">
                             <li><a href="#">Dashboard</a></li>
                             <li><a href="#">Table</a></li>
-                            <li class="active">Add Data transaksi</li>
+                            <li class="active">Add Data Transaksi</li>
                         </ol>
                     </div>
                 </div>
@@ -54,47 +54,38 @@
                     <div class="col-sm-6 col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong>Add Data transaksi</strong>
+                                <strong>Add Data Transaksi</strong>
                             </div>
                             <form action="{{ route('transaksi.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                <div class="card-body custom-padding"> <!-- Tambahkan kelas custom-padding di sini -->
+                                <div class="card-body custom-padding">
                                     <div class="form-group mb-3">
                                         <label for="datePicker" class="form-label">Pilih Tanggal</label>
-                                        <input type="date" class="form-control" id="datePicker"
-                                            name="tanggal_pembelian">
+                                        <input type="date" class="form-control" id="datePicker" name="tanggal_pembelian" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Nama Barang</label>
-                                        <select class="form-control" name="id_barang">
+                                        <select class="form-control" name="id_barang" required>
                                             @foreach ($barang as $data)
-                                                <option value="{{ $data->id }}">{{ $data->nama_barang }}
-                                                </option>
+                                                <option value="{{ $data->id }}">{{ $data->nama_barang }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Nama Kasir</label>
-                                        <select class="form-control" name="id_kasir">
+                                        <select class="form-control" name="id_kasir" required>
                                             @foreach ($kasir as $data)
-                                                <option value="{{ $data->id }}">{{ $data->nama_kasir }}
-                                                </option>
+                                                <option value="{{ $data->id }}">{{ $data->nama_kasir }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Jumlah</label>
-                                        <input type="number" class="form-control" name="jumlah">
-                                        <br>
-                                        </select>
-                                        <div class="form-group mb-3">
-                                            <label for="cover" class="form-label">Masukkan Gambar</label>
-                                            <input class="form-control form-control-sm" id="cover" type="file"
-                                                name="cover">
-                                        </div>
-                                        <button type="submit" class="btn btn-success">Tambah</button>
-                                        <a href="{{ url('transaksi') }}" class="btn btn-primary">Kembali</a>
-                                    </div> <!-- Akhiri card-body custom-padding -->
+                                        <input type="number" class="form-control" name="jumlah" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Tambah</button>
+                                    <a href="{{ url('transaksi') }}" class="btn btn-primary">Kembali</a>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -106,16 +97,6 @@
     <script src="{{ asset('admin/js/popper.min.js') }}"></script>
     <script src="{{ asset('admin/js/plugins.js') }}"></script>
     <script src="{{ asset('admin/js/main.js') }}"></script>
-
-    <script>
-        jQuery(document).ready(function() {
-            jQuery(".standardSelect").chosen({
-                disable_search_threshold: 10,
-                no_results_text: "Oops, nothing found!",
-                width: "100%"
-            });
-        });
-    </script>
 </body>
 
 </html>

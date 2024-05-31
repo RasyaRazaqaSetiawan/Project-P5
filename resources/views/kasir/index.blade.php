@@ -80,7 +80,6 @@
                                             <th>Jenis Kelamin</th>
                                             <th>Alamat</th>
                                             <th>No Telepon</th>
-                                            <th>Image</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -95,12 +94,6 @@
                                             <td>{{ $data->jenis_kelamin }}</td>
                                             <td>{{ $data->alamat }}</td>
                                             <td>{{ $data->no_telepon }}</td>
-                                            <td>
-                                                <img src="{{ asset('images/kasir/' . $data->cover) }}"
-                                                    width="100" alt="">
-                                                {{-- img src = "{{asset('storage/'. $data->cover)}}"100 --}}
-                                                {{-- $data->cover --}}
-                                            </td>
                                             <form action="{{ route('kasir.destroy', $data->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
