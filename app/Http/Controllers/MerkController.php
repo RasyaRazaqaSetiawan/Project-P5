@@ -106,6 +106,7 @@ class MerkController extends Controller
     {
         $merk = Merk::findOrFail($id);
         $merk->delete();
-        return redirect()->route(('merk.index'));
+        return redirect()->route(('merk.index'))
+        ->with('success', 'data berhasil di hapus');
     }
 }

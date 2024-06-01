@@ -94,25 +94,24 @@
                                                 <td>{{ $no++ }}</td>
                                                 <td>{{ $data->nama_barang }}</td>
                                                 <td>{{ $data->stok }}</td>
-                                                <td>{{ $data->harga }}</td>
+                                                <td>{{ ($data->harga) }}</td>
                                                 <td>{{ $data->merk->nama_merk }}</td>
                                                 <td>
                                                     <img src="{{ asset('images/barang/' . $data->cover) }}"
-                                                        width="100" alt="">
-                                                    {{-- img src = "{{asset('storage/'. $data->cover)}}"100 --}}
-                                                    {{-- $data->cover --}}
+                                                        width="90" alt="">
                                                 </td>
                                                 <form action="{{ route('barang.destroy', $data->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <td class="center">
                                                         <a href="{{ route('barang.edit', $data->id) }}"
-                                                            class="btn btn-success">Ubah</a>
+                                                            class="btn btn-success"><i
+                                                                class="fa fa-pencil-square-o"></i></a>
                                                         <a href="{{ route('barang.show', $data->id) }}"
-                                                            class="btn btn-warning">Detail</a>
+                                                            class="btn btn-warning"><i class="fa fa-eye"></i></a>
                                                         <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Apakah Anda Yakin ingin menghapus data ini?')">
-                                                            Delete</button>
+                                                            onclick="return confirm('Apakah Anda Yakin ingin menghapus data ini?')"><i
+                                                                class="fa fa-trash-o"></i></button>
                                                     </td>
                                             </tr>
                                         @endforeach

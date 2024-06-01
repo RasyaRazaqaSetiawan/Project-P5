@@ -38,8 +38,6 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $harga = $this->getHargaBerdasarkanStok($request->stok);
-
         $barang = new Barang;
         $barang->nama_barang = $request->input('nama_barang');
         $barang->stok = $request->input('stok');
@@ -58,20 +56,6 @@ class BarangController extends Controller
         return redirect()->route('barang.index')
             ->with('success', 'data berhasil ditambahkan');
 
-    }
-
-    private function getHargaBerdasarkanStok($stok)
-    {
-        switch ($stok) {
-            case 10:
-                return 10000; // harga untuk stok 10
-            case 20:
-                return 18000; // harga untuk stok 20
-            case 30:
-                return 25000; // harga untuk stok 30
-            default:
-                return 0; // default harga jika stok tidak cocok
-        }
     }
 
     /**
@@ -113,10 +97,7 @@ class BarangController extends Controller
         $barang->stok = $request->stok;
         $barang->harga = $request->harga;
         $barang->id_merk = $request->id_merk;
-
-        $barang->save();
-        return redirect()->route('barang.index')
-        ->with('success', 'data berhasil Ubah');
+        
         // delete img
         if ($request->hasFile('cover')) {
             $barang->deleteImage();
@@ -124,9 +105,12 @@ class BarangController extends Controller
             $name = rand(1000, 9999) . $img->getClientOriginalName();
             $img->move('images/barang', $name);
             $barang->cover = $name;
+            
+        $barang->save();
+        return redirect()->route('barang.index')
+            ->with('success', 'data berhasil Ubah');
+            
         }
-
-
     }
 
     /**
@@ -138,8 +122,14 @@ class BarangController extends Controller
     public function destroy($id)
     {
         $barang = Barang::findOrFail($id);
+    
+        // Hapus gambar jika ada
+        if ($barang->cover && file_exists(public_path('images/barang/' . $barang->cover))) {
+            unlink(public_path('images/barang/' . $barang->cover));
+        }
+    
         $barang->delete();
-        return redirect()->route(('barang.index'))
-            ->with('success', 'data berhasil di hapus');
+    
+        return redirect()->route('barang.index')->with('success', 'Data berhasil dihapus');
     }
 }

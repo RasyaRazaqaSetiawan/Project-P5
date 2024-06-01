@@ -103,6 +103,9 @@ class TransaksiController extends Controller
         $barang = Barang::findOrFail($transaksi->id_barang);
         $transaksi->total = $barang->harga * $transaksi->jumlah;
 
+        // Mengurangi Harga Stok
+        $barang->stok -= $transaksi->jumlah;
+
         // Simpan perubahan transaksi
         $transaksi->save();
 
@@ -115,9 +118,18 @@ class TransaksiController extends Controller
      * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaksi $transaksi)
+public function destroy($transaksi)
     {
+        $transaksi = Transaksi::findOrFail($transaksi);
+
+        // Mengembalikan stok barang
+        $barang = Barang::findOrFail($transaksi->id_barang);
+        $barang->stok += $transaksi->jumlah;
+        $barang->save();
+
+        // Hapus transaksi
         $transaksi->delete();
-        return redirect()->route('transaksi.index')->with('success', 'Data berhasil dihapus');
+
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus');
     }
 }

@@ -92,9 +92,9 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <td class="center">
-                                                    <a href="{{ route('merk.edit', $data->id) }}" class="btn btn-success">Ubah</a>
-                                                    <a href="{{ route('merk.show', $data->id) }}" class="btn btn-warning">Detail</a>
-                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin ingin menghapus data ini?')">Hapus</button>
+                                                    <a href="{{ route('merk.edit', $data->id) }}" class="btn btn-success"><i class="fa fa-pencil-square-o"></i></a>
+                                                    <a href="{{ route('merk.show', $data->id) }}" class="btn btn-warning"><i class="fa fa-eye"></i></a>
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin ingin menghapus data ini?')"><i class="fa fa-trash-o"></i></button>
                                                 </td>
                                             </form>
                                         </tr>

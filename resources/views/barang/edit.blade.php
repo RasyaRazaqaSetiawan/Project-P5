@@ -69,18 +69,20 @@
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>stok</label>
-                                        <input type="number" class="form-control" name="stok" id="stok" value="{{$barang->stok}}">
+                                        <input type="number" class="form-control" name="stok" id="stok"
+                                            value="{{ $barang->stok }}">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Harga</label>
-                                        <input type="text" class="form-control" name="harga" id="harga" value="{{$barang->harga}}"
-                                            readonly>
+                                        <input type="text" class="form-control" name="harga" id="harga"
+                                            value="{{ $barang->harga }}">
                                         <div class="form-group mb-3">
                                             <label>Nama Merk</label>
                                             <select class="form-control" name="id_merk">
                                                 @foreach ($merk as $data)
                                                     <option value="{{ $data->id }}"
-                                                        {{ $data->id == $barang->id_merk ? 'selected' : '' }}>{{ $data->nama_merk }}
+                                                        {{ $data->id == $barang->id_merk ? 'selected' : '' }}>
+                                                        {{ $data->nama_merk }}
                                                     </option>
                                                 @endforeach
                                             </select>

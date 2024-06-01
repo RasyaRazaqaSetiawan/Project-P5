@@ -76,16 +76,8 @@
                                         <p class="help-block">Masukkan Nama Anda </p>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Stok</label><br>
-                                        <select class="form-control" name="stok" id="stok" required>
-                                            <option value="" disabled selected>Pilih Stok</option>
-                                            <option value="10" {{ $barang->stok == '10' ? 'checked' : '' }}
-                                                disabled>10</option>
-                                            <option value="20" {{ $barang->stok == '20' ? 'checked' : '' }}
-                                                disabled>20</option>
-                                            <option value="30" {{ $barang->stok == '30' ? 'checked' : '' }}
-                                                disabled>30</option>
-                                        </select>
+                                        <label>stok</label>
+                                        <input type="number" class="form-control" value="{{$barang->stok}}" name="stok" id="stok" required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Harga</label>
