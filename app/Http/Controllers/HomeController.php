@@ -19,7 +19,6 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
-
     /**
      * Show the application dashboard.
      *
@@ -27,11 +26,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Untuk Menampilkan data transaksi
+        $transaksi = Transaksi::all();
+
+        // Count untuk menghitung berapa banyak table yang kita bikan
         $merkCount = Merk::count();
         $barangCount = Barang::count();
         $kasirCount = Kasir::count();
         $transaksiCount = Transaksi::count();
 
-        return view('home', compact('merkCount', 'barangCount', 'kasirCount', 'transaksiCount'));
+        return view('home', compact('transaksi','merkCount', 'barangCount', 'kasirCount', 'transaksiCount'));
     }
 }

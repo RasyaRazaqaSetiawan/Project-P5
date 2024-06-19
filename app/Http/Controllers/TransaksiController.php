@@ -3,52 +3,54 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use App\Models\Merk;
 use App\Models\Barang;
 use App\Models\Kasir;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $transaksi = Transaksi::all();
         return view('transaksi.index', compact('transaksi'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
+        $merk = Merk::all();
         $barang = Barang::all();
         $kasir = Kasir::all();
-        return view('transaksi.create', compact('barang', 'kasir'));
+        return view('transaksi.create', compact('barang', 'kasir', 'merk')); // Mengirimkan variabel ke view
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
+        $request->validate([
+            'tanggal_pembelian' => 'required|date',
+            'id_merk' => 'required|exists:merks,id',
+            'id_barang' => 'required|exists:barangs,id',
+            'id_kasir' => 'required|exists:kasirs,id',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+        
+        
+        // Ambil barang dari database
+        $barang = Barang::findOrFail($request->id_barang);
+
+        // Periksa apakah stok mencukupi
+        if ($barang->stok < $request->jumlah) {
+            return redirect()->route('transaksi.index')->with('error', 'Stok tidak mencukupi!');
+        }
+
         // Buat transaksi baru
         $transaksi = new Transaksi;
         $transaksi->tanggal_pembelian = $request->tanggal_pembelian;
+        $transaksi->id_merk = $request->id_merk;
         $transaksi->id_barang = $request->id_barang;
         $transaksi->id_kasir = $request->id_kasir;
         $transaksi->jumlah = $request->jumlah;
-
-        // Ambil harga barang dari database
-        $barang = Barang::findOrFail($transaksi->id_barang);
+        $transaksi->cover = $barang->cover; // Mengambil cover dari tabel Barang
         $transaksi->total = $barang->harga * $transaksi->jumlah;
 
         // Mengurangi stok barang
@@ -61,50 +63,62 @@ class TransaksiController extends Controller
         return redirect()->route('transaksi.index')->with('success', 'Data berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transaksi $transaksi)
+    public function show($id)
     {
-        return view('transaksi.show', compact('transaksi'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaksi $transaksi)
-    {
+        $transaksi = Transaksi::findOrFail($id);
+        // Model
+        $merk = Merk::all();
         $barang = Barang::all();
         $kasir = Kasir::all();
-        return view('transaksi.edit', compact('transaksi', 'barang', 'kasir'));
+        return view('transaksi.show', compact('transaksi', 'barang', 'kasir', 'merk'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
+
+    public function edit($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        $merk = Merk::all();
+        $barang = Barang::all();
+        $kasir = Kasir::all();
+        return view('transaksi.edit', compact('transaksi', 'barang', 'kasir', 'merk'));
+    }
+
     public function update(Request $request, Transaksi $transaksi)
     {
+        $request->validate([
+            'tanggal_pembelian' => 'required|date',
+            'id_merk' => 'required|exists:merks,id',
+            'id_barang' => 'required|exists:barangs,id',
+            'id_kasir' => 'required|exists:kasirs,id',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        // Simpan nilai jumlah sebelum diubah
+        $jumlahSebelumnya = $transaksi->jumlah;
+
+        // Ambil barang dari database
+        $barang = Barang::findOrFail($request->id_barang);
+
+        // Jika jumlah barang diubah, perbarui nilai total transaksi dan stok barang
+        if ($jumlahSebelumnya != $request->jumlah) {
+            // Periksa apakah stok mencukupi
+            if ($barang->stok + $jumlahSebelumnya < $request->jumlah) {
+                return redirect()->route('transaksi.index')->with('error', 'Stok tidak mencukupi!');
+            }
+
+            // Kembalikan stok sebelumnya
+            $barang->stok += $jumlahSebelumnya;
+            $barang->stok -= $request->jumlah;
+            $barang->save();
+        }
+
         $transaksi->tanggal_pembelian = $request->tanggal_pembelian;
+        $transaksi->id_merk = $request->id_merk;
         $transaksi->id_barang = $request->id_barang;
         $transaksi->id_kasir = $request->id_kasir;
         $transaksi->jumlah = $request->jumlah;
-
-        // Ambil harga barang dari database
-        $barang = Barang::findOrFail($transaksi->id_barang);
-        $transaksi->total = $barang->harga * $transaksi->jumlah;
-
-        // Mengurangi Harga Stok
-        $barang->stok -= $transaksi->jumlah;
+        $transaksi->total = $barang->harga * $request->jumlah;
 
         // Simpan perubahan transaksi
         $transaksi->save();
@@ -112,13 +126,7 @@ class TransaksiController extends Controller
         return redirect()->route('transaksi.index')->with('success', 'Data berhasil diubah');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-public function destroy($transaksi)
+    public function destroy($transaksi)
     {
         $transaksi = Transaksi::findOrFail($transaksi);
 

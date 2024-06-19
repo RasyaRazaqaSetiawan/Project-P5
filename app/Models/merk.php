@@ -13,6 +13,6 @@ class merk extends Model
 
     public function merk()
     {
-        return $this->hasMany(merk::class, 'id_barang');
+        return $this->hasMany(merk::class, 'id_barang', 'id_transaksi');
     }
 }

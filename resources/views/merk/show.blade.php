@@ -73,6 +73,11 @@
                                         <input type="text" class="form-control" name="nama_merk" value="{{$merk->nama_merk}}" placeholder="Nama merk" disabled>
                                         <p class="help-block">Masukkan Nama Anda </p>
                                     </div>
+                                    <div class="form-group mb-3">
+                                        <label for="cover" class="form-label">Tampilan Gambar</label><br>
+                                        <img src="{{ asset('images/merk/' . $merk->cover) }}" width="150"
+                                            alt="Cover merk">
+                                    </div>
                                     <button type="submit" class="btn btn-success">Tambah</button>
                                     <a href="{{ url('merk') }}" class="btn btn-primary">Kembali</a>
                                 </div>

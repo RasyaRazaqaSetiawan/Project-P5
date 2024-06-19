@@ -42,21 +42,18 @@ class KasirController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_kasir' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|string',
+            'alamat' => 'required|string',
+            'no_telepon' => 'required|string|max:15',
+        ]);
+
         $kasir = new kasir;
         $kasir->nama_kasir = $request->input('nama_kasir');
         $kasir->jenis_kelamin = $request->input('jenis_kelamin');
         $kasir->alamat = $request->input('alamat');
         $kasir->no_telepon = $request->input('no_telepon');
-
-
-        // delete img
-        if ($request->hasFile('cover')) {
-            $kasir->deleteImage();
-            $img = $request->file('cover');
-            $name = rand(1000, 9999) . $img->getClientOriginalName();
-            $img->move('images/kasir', $name);
-            $kasir->cover = $name;
-        }
 
         $kasir->save();
         return redirect()->route('kasir.index')
@@ -96,13 +93,20 @@ class KasirController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nama_kasir' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|string',
+            'alamat' => 'required|string',
+            'no_telepon' => 'required|string|max:15',
+        ]);
+
         $kasir = Kasir::findOrFail($id);
         $kasir->nama_kasir = $request->nama_kasir;
         $kasir->jenis_kelamin = $request->jenis_kelamin;
         $kasir->alamat = $request->alamat;
         $kasir->no_telepon = $request->no_telepon;
         $kasir->save();
-        
+
         return redirect()->route('kasir.index')
             ->with('success', 'data berhasil diubah');
     }

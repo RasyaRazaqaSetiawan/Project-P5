@@ -6,6 +6,7 @@ use App\Models\merk;
 
 use Illuminate\Http\Request;
 
+// class
 class MerkController extends Controller
 {
     /**
@@ -14,12 +15,14 @@ class MerkController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    //  method
     public function __construct()
     {
         $this->middleware('auth');
     }
     public function index()
     {
+        // property dan object 
         $merk = Merk::all();
         return view('merk/index', compact('merk'));
     }
@@ -42,19 +45,17 @@ class MerkController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_merk' => 'required|unique:merks,nama_merk',    // Memastikan nama_merk adalah unik di tabel merks
+        ], [
+            'nama_merk.unique' => 'Nama Merk sudah terisi'
+        ]);
 
         $merk = new Merk;
         $merk->nama_merk = $request->input('nama_merk');
-
         $merk->save();
-        return redirect()->route('merk.index')
-            ->with('success', 'Data berhasil ditambahkan');
-
-        $merk->save();
-        return redirect()->route('merk.index')
-            ->with('success', 'data berhasil ditambahkan');
+        return redirect()->route('merk.index')->with('success', 'Data berhasil ditambahkan.');
     }
-
     /**
      * Display the specified resource.
      *
@@ -73,7 +74,7 @@ class MerkController extends Controller
      * @param  \App\Models\merk  $merk
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+   public function edit($id)
     {
         $merk = Merk::findOrFail($id);
         return view('merk.edit', compact('merk'));
@@ -96,6 +97,7 @@ class MerkController extends Controller
             ->with('success', 'data berhasil diubah');
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -105,8 +107,9 @@ class MerkController extends Controller
     public function destroy($id)
     {
         $merk = Merk::findOrFail($id);
+
         $merk->delete();
         return redirect()->route(('merk.index'))
-        ->with('success', 'data berhasil di hapus');
+            ->with('success', 'data berhasil di hapus');
     }
 }

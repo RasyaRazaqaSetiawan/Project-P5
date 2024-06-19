@@ -1,146 +1,201 @@
-<!doctype html>
-<html class="no-js" lang="">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sufee Admin - HTML5 Admin Template</title>
-    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="apple-touch-icon" href="apple-icon.png">
-    <link rel="shortcut icon" href="favicon.ico">
-
-    <link rel="stylesheet" href="{{ asset('admin/css/normalize.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/themify-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/cs-skin-elastic.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/scss/style.css') }}">
-    <link href="{{ asset('admin/css/lib/vector-map/jqvmap.min.css') }}" rel="stylesheet">
-
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
-
-    <style>
-        .dataTables_filter {
-            float: right;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link href="img/logo/logo.png" rel="icon" />
+    <title>RuangAdmin - DataTables</title>
+    <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('admin/css/ruang-admin.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
 </head>
 
-<body>
-    @include('layouts.sidebar')
-    @include('layouts.navbar')
-
-    <div id="right-panel" class="right-panel">
-        <div class="breadcrumbs">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1>Dashboard</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Data Table transaksi</a></li>
-                            <li class="active">Data transaksi</li>
+<body id="page-top">
+    <div id="wrapper">
+        @include('layouts.sidebar')
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                @include('layouts.navbar')
+                <!-- Container Fluid-->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">DataTables</h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="./">Home</a></li>
+                            <li class="breadcrumb-item">Tables</li>
+                            <li class="breadcrumb-item active" aria-current="page">DataTables</li>
                         </ol>
                     </div>
-                </div>
-            </div>
-        </div>
-        {{-- /breadcrumbs --}}
-        <div class="content mt-3">
-            <div class="animated fadeIn">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title">Data transaksi</strong>
-                                <div class="pull-right">
-                                    <a href="{{ route('transaksi.create') }}" class="btn btn-primary btn-sm">+ Tambah</a>
-                                </div>
-                            </div>
-                            <div class="card-body" style="overflow-x:auto;">
-                                <table id="bootstrap-data-table" class="table table-striped table-bordered">
-                                    @if (session('success'))
-                                    <div class="alert alert-success" role="alert">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
 
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Tanggal Pembelian</th>
-                                        <th>Nama Barang</th>
-                                        <th>Nama Kasir</th>
-                                        <th>Jumlah</th>
-                                        <th>Total</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $no = 1;
-                                    @endphp
-                                    @foreach ($transaksi as $data)
-                                        <tr class="odd gradeX">
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ $data->tanggal_pembelian }}</td>
-                                            <td>{{ $data->barang->nama_barang }}</td>
-                                            <td>{{ $data->kasir->nama_kasir }}</td>
-                                            <td>{{ $data->formatted_harga  }}</td>
-                                            <td>{{ $data->total }}</td>
-                                            <form action="{{ route('transaksi.destroy', $data->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <td class="center">
-                                                    <a href="{{ route('transaksi.edit', $data->id) }}"
-                                                        class="btn btn-success"><i class="fa fa-pencil-square-o"></i></a>
-                                                    <a href="{{ route('transaksi.show', $data->id) }}"
-                                                        class="btn btn-warning"><i class="fa fa-eye"></i></a>
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('Apakah Anda Yakin ingin menghapus data ini?')">
-                                                        <i class="fa fa-trash-o"></i></button>
-                                                </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                    <!-- Row -->
+                    <div class="row">
+                        <!-- DataTable with Hover -->
+                        <div class="col-lg-12">
+                            <div class="card mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">DataTables with Hover</h6>
+                                    <div class="pull-right">
+                                        <a href="{{ route('transaksi.create') }}" class="btn btn-primary btn-sm">
+                                            + Tambah</a>
+                                    </div>
+                                </div>
+                                <div class="table-responsive p-3">
+                                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                                        @if (session('success'))
+                                            <div class="alert alert-success" role="alert">{{ session('success') }}
+                                            </div>
+                                        @endif
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Tanggal Pembelian</th>
+                                                <th>Cover</th>
+                                                <th>Nama Merk</th>
+                                                <th>Nama Barang</th>
+                                                <th>Nama Kasir</th>
+                                                <th>Jumlah</th>
+                                                <th>Total</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Tanggal Pembelian</th>
+                                                <th>Cover</th>
+                                                <th>Nama Merk</th>
+                                                <th>Nama Barang</th>
+                                                <th>Nama Kasir</th>
+                                                <th>Jumlah</th>
+                                                <th>Total</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            @foreach ($transaksi as $data)
+                                                <tr class="odd gradeX">
+                                                    <td>{{ $data->tanggal_pembelian }}</td>
+                                                    <td>
+                                                        <img src="{{ asset('images/barang/' . $data->barang->cover) }}" width="90" alt="">
+                                                    </td>
+                                                    <td>{{ $data->merk->nama_merk }}</td>
+                                                    <td>{{ $data->barang->nama_barang }}</td>
+                                                    <td>{{ $data->kasir->nama_kasir }}</td>
+                                                    <td>{{ $data->jumlah }}</td>
+                                                    <td>{{ $data->total }}</td>
+                                                    <td>
+                                                        <form action="{{ route('transaksi.destroy', $data->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a href="{{ route('transaksi.edit', $data->id) }}"
+                                                                class="btn btn-success"><i
+                                                                    class="fa fa-solid fa-pen"></i></a>
+                                                                    <a href="{{ route('transaksi.show', $data->id) }}"
+                                                                        class="btn btn-warning"><i class="fa fa-eye"></i></a>
+                                                            <button type="submit" class="btn btn-danger"><i
+                                                                    class="fa fa-trash"></i></button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Row -->
+
+                <!-- Documentation Link -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>
+                            DataTables is a third party plugin that is used to generate the demo table below. For
+                            more information about DataTables, please visit the official <a
+                                href="https://datatables.net/" target="_blank">DataTables documentation.</a>
+                        </p>
+                    </div>
+                </div>
             </div>
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>copyright &copy;
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script> - developed by <b><a href="https://indrijunanda.gitlab.io/"
+                                    target="_blank">indrijunanda</a></b>
+                        </span>
+                    </div>
+                </div>
+            </footer>
+            <!-- Footer -->
         </div>
     </div>
 
-    <script src="{{ asset('admin/js/vendor/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ asset('admin/js/popper.min.js') }}"></script>
-    <script src="{{ asset('admin/js/plugins.js') }}"></script>
-    <script src="{{ asset('admin/js/main.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/datatables.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/buttons.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/jszip.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('admin/js/lib/data-table/datatables-init.js') }}"></script>
+    <!-- Scroll to top -->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('admin/js/ruang-admin.min.js') }}"></script>
+    <!-- Page level plugins -->
+    <script src="{{ asset('admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
-            $('#bootstrap-data-table').DataTable();
+            // DataTable initialization
+            $("#dataTable").DataTable();
+            $("#dataTableHover").DataTable();
+    
+            // SweetAlert for delete confirmation
+            $('.delete-button').on('click', function(e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+    
+            // SweetAlert for add success
+            @if (session('status'))
+                Swal.fire({
+                    title: "Berhasil Menambahkan Data!",
+                    text: "{{ session('status') }}",
+                    icon: "success",
+                    timer: 1500
+                });
+            @endif
+    
+            // Show add modal if there are errors
+            @if ($errors->any())
+                $('#addModal').modal('show');
+            @endif
         });
     </script>
+    
 </body>
+
 </html>

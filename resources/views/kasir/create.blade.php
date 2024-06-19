@@ -1,107 +1,61 @@
-<!doctype html>
-<html class="no-js" lang="">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sufee Admin - HTML5 Admin Template</title>
-    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="apple-touch-icon" href="apple-icon.png">
-    <link rel="shortcut icon" href="favicon.ico">
-
-    <link rel="stylesheet" href="{{ asset('admin/css/normalize.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/themify-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/css/cs-skin-elastic.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/scss/style.css') }}">
-    <link href="{{ asset('admin/css/lib/vector-map/jqvmap.min.css') }}" rel="stylesheet">
-
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
-</head>
-
-<body>
-    @include('layouts.sidebar')
-
-    <div id="right-panel" class="right-panel">
-        <div class="breadcrumbs">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1>Dashboard</h1>
+<!-- Modal Add Data -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Tambah Data Kasir</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('kasir.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nama_kasir">Nama Kasir</label>
+                        <input type="text" class="form-control @error('nama_kasir') is-invalid @enderror" id="nama_kasir" name="nama_kasir" required>
+                        @error('nama_kasir')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="jenis_kelamin">Jenis Kelamin</label><br>
+                        <input type="radio" id="jenis_kelamin" name="jenis_kelamin" value="Laki-Laki"> Laki-Laki
+                        <input type="radio" id="jenis_kelamin" name="jenis_kelamin" value="Perempuan"> Perempuan
+                        @error('jenis_kelamin')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <textarea class="form-control" rows="3" id="alamat" name="alamat" required></textarea>
+                        @error('alamat')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="no_telepon">No Telepon</label>
+                        <input type="number" class="form-control" id="no_telepon" name="no_telepon" required>
+                        @error('no_telepon')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Table</a></li>
-                            <li class="active">Add Data kasir</li>
-                        </ol>
-                    </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
-            </div>
-        </div>
-        {{-- /breadcrumbs --}}
-        <div class="content mt-3">
-            <div class="animated fadeIn">
-                <div class="row justify-content-center">
-                    <div class="col-sm-6 col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong>Add Data Kasir</strong>
-                            </div>
-                            <form action="{{ route('kasir.store') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="card-body custom-padding"> <!-- Tambahkan kelas custom-padding di sini -->
-                                    <div class="form-group mb-3">
-                                        <label>Nama kasir</label>
-                                        <input type="text" class="form-control" name="nama_kasir" placeholder="Nama kasir">
-                                        <p class="help-block">Masukkan Nama Anda </p>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label>Jenis Kelamin</label><br>
-                                        <input type="radio" name="jenis_kelamin" value="Laki-Laki" checked> Laki-Laki
-                                        <input type="radio" name="jenis_kelamin" value="Perempuan"> Perempuan
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label>Alamat</label>
-                                        <textarea class="form-control" rows="3" placeholder="Masukkan Alamat" name="alamat"></textarea>
-                                        <div class="form-group mb-3">
-                                            <label>No Telepon</label>
-                                            <input type="tel" class="form-control" name="no_telepon" placeholder="No Telepon" required>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-success">Tambah</button>
-                                    <a href="{{ url('kasir') }}" class="btn btn-primary">Kembali</a>
-
-                                </div> <!-- Akhiri card-body custom-padding -->
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
-    <script src="{{ asset('admin/js/vendor/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ asset('admin/js/popper.min.js') }}"></script>
-    <script src="{{ asset('admin/js/plugins.js') }}"></script>
-    <script src="{{ asset('admin/js/main.js') }}"></script>
+</div>
 
-    <script>
-        jQuery(document).ready(function() {
-            jQuery(".standardSelect").chosen({
-                disable_search_threshold: 10,
-                no_results_text: "Oops, nothing found!",
-                width: "100%"
-            });
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    @if ($errors->any())
+        $(document).ready(function() {
+            $('#addModal').modal('show');
         });
-    </script>
-</body>
-
-</html>
+    @endif
+</script>
